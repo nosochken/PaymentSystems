@@ -1,0 +1,15 @@
+/Users/evelinanoskova/Documents/Code/PaymentSystems/bin/Debug/net7.0/PaymentSystems
+/Users/evelinanoskova/Documents/Code/PaymentSystems/bin/Debug/net7.0/PaymentSystems.deps.json
+/Users/evelinanoskova/Documents/Code/PaymentSystems/bin/Debug/net7.0/PaymentSystems.runtimeconfig.json
+/Users/evelinanoskova/Documents/Code/PaymentSystems/bin/Debug/net7.0/PaymentSystems.dll
+/Users/evelinanoskova/Documents/Code/PaymentSystems/bin/Debug/net7.0/PaymentSystems.pdb
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.csproj.AssemblyReference.cache
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.GeneratedMSBuildEditorConfig.editorconfig
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.AssemblyInfoInputs.cache
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.AssemblyInfo.cs
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.csproj.CoreCompileInputs.cache
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.dll
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/refint/PaymentSystems.dll
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.pdb
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/PaymentSystems.genruntimeconfig.cache
+/Users/evelinanoskova/Documents/Code/PaymentSystems/obj/Debug/net7.0/ref/PaymentSystems.dll
