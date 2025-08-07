@@ -15,14 +15,13 @@ class Program
 
         Order order = new Order(1275, 12000);
 
-        int firstSecretKeyNumber = 0;
-        int lastSecretKeyNumber = 200;
+        int saltLength = 16;
 
         List<IPaymentSystem> paymentSystems = new List<IPaymentSystem>
         {
             new FirstPaymentSystem(MD5Hasher),
             new SecondPaymentSystem(MD5Hasher),
-            new ThirdPaymentSystem(SHA1Hasher, firstSecretKeyNumber, lastSecretKeyNumber)
+            new ThirdPaymentSystem(SHA1Hasher, saltLength)
         };
 
         foreach (IPaymentSystem paymentSystem in paymentSystems)
@@ -93,21 +92,16 @@ public class ThirdPaymentSystem : IPaymentSystem
 {
     private Hasher _hasher;
 
-    private int _firstSecretKeyNumber;
-    private int _lastSecretKeyNumber;
+    private int _saltLength;
 
-    public ThirdPaymentSystem(Hasher hasher, int firstSecretKeyNumber, int lastSecretKeyNumber)
+    public ThirdPaymentSystem(Hasher hasher, int saltLength)
     {
         _hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
 
-        if (firstSecretKeyNumber < 0)
-            throw new ArgumentOutOfRangeException(nameof(firstSecretKeyNumber));
+        if (saltLength <= 0)
+            throw new ArgumentOutOfRangeException(nameof(saltLength));
 
-        if (lastSecretKeyNumber < firstSecretKeyNumber)
-            throw new ArgumentOutOfRangeException(nameof(lastSecretKeyNumber));
-
-        _firstSecretKeyNumber = firstSecretKeyNumber;
-        _lastSecretKeyNumber = lastSecretKeyNumber;
+        _saltLength = saltLength;
     }
 
     public string GetPayingLink(Order order)
@@ -115,14 +109,19 @@ public class ThirdPaymentSystem : IPaymentSystem
         if (order == null)
             throw new ArgumentNullException(nameof(order));
 
-        return $"system3.com/pay?amount={order.Amount}&curency=RUB&hash={_hasher.GetHash(order.Amount.ToString() + order.Id.ToString() + GetSecretKey().ToString())}";
+        return $"system3.com/pay?amount={order.Amount}&curency=RUB&hash={_hasher.GetHash(order.Amount.ToString() + order.Id.ToString() + GenerateSalt())}";
     }
 
-    private int GetSecretKey()
+    private string GenerateSalt()
     {
-        Random random = new Random();
+        byte[] saltBytes = new byte[_saltLength];
 
-        return random.Next(_firstSecretKeyNumber, _lastSecretKeyNumber + 1);
+        using (RandomNumberGenerator random = RandomNumberGenerator.Create())
+        {
+            random.GetBytes(saltBytes);
+        }
+
+        return Convert.ToBase64String(saltBytes);
     }
 }
 
