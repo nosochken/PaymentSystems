@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 
 class Program
@@ -15,13 +16,13 @@ class Program
 
         Order order = new Order(1275, 12000);
 
-        int saltLength = 16;
+        string salt = "myauch";
 
         List<IPaymentSystem> paymentSystems = new List<IPaymentSystem>
         {
             new FirstPaymentSystem(MD5Hasher),
             new SecondPaymentSystem(MD5Hasher),
-            new ThirdPaymentSystem(SHA1Hasher, saltLength)
+            new ThirdPaymentSystem(SHA1Hasher, salt)
         };
 
         foreach (IPaymentSystem paymentSystem in paymentSystems)
@@ -92,16 +93,16 @@ public class ThirdPaymentSystem : IPaymentSystem
 {
     private Hasher _hasher;
 
-    private int _saltLength;
+    private string _salt;
 
-    public ThirdPaymentSystem(Hasher hasher, int saltLength)
+    public ThirdPaymentSystem(Hasher hasher, string salt)
     {
         _hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
 
-        if (saltLength <= 0)
-            throw new ArgumentOutOfRangeException(nameof(saltLength));
+        if (string.IsNullOrWhiteSpace(salt))
+            throw new ArgumentException(nameof(salt));
 
-        _saltLength = saltLength;
+        _salt = salt;
     }
 
     public string GetPayingLink(Order order)
@@ -109,19 +110,7 @@ public class ThirdPaymentSystem : IPaymentSystem
         if (order == null)
             throw new ArgumentNullException(nameof(order));
 
-        return $"system3.com/pay?amount={order.Amount}&curency=RUB&hash={_hasher.GetHash(order.Amount.ToString() + order.Id.ToString() + GenerateSalt())}";
-    }
-
-    private string GenerateSalt()
-    {
-        byte[] saltBytes = new byte[_saltLength];
-
-        using (RandomNumberGenerator random = RandomNumberGenerator.Create())
-        {
-            random.GetBytes(saltBytes);
-        }
-
-        return Convert.ToBase64String(saltBytes);
+        return $"system3.com/pay?amount={order.Amount}&curency=RUB&hash={_hasher.GetHash(order.Amount.ToString() + order.Id.ToString() + _salt)}";
     }
 }
 
